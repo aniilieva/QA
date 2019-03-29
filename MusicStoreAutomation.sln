@@ -1,30 +1,281 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicStoreAutomation", "SeleniumWebDriverTemplateProject\MusicStoreAutomation.csproj", "{FA8F1D44-77B8-445E-834C-7F7AC64017C4}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F9F17950-D30D-4835-B149-1072ADF51E1F}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FA8F1D44-77B8-445E-834C-7F7AC64017C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FA8F1D44-77B8-445E-834C-7F7AC64017C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FA8F1D44-77B8-445E-834C-7F7AC64017C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FA8F1D44-77B8-445E-834C-7F7AC64017C4}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {21892C15-23E0-489C-ABBF-B35BC94F3186}
-	EndGlobalSection
-EndGlobal
+using DemoqaStore.Helpers;
+using DemoqaStore.Pages;
+using DemoqaStore.Tests.Abstract;
+using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Interactions.Internal;
+using OpenQA.Selenium.Support.UI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace DemoqaStore.Tests
+{
+    class AddProductToCartTests : DesktopSeleniumTestFixturePrototype
+    {
+        public AddProductToCartTests(Browsers browser) : base(browser)
+        { }
+
+      
+
+
+        [Test]
+        public void BuyingProductsFromProductCategoryTest()
+        {
+            //adding to cart products from Product Category Page
+            var testInstance = ProductCategoryPage.NavigateTo(base.Driver);
+            var products = testInstance.GetProducts();
+            for (var i = 0; i < products.Count(); i++)
+            {
+                products[i].AddToCartButton.Click();
+                Thread.Sleep(2000);
+            }
+            Thread.Sleep(5000);
+
+            //comparing the number of added products with the number in products in cart
+            var countAsAString = testInstance.ProductCountTextBox.Text;
+            var countAsAnInteger = Convert.ToInt32(countAsAString);
+            Assert.AreEqual(products.Count(), countAsAnInteger);
+
+            //navigating to Checkout Your cart page
+            testInstance.CheckoutButton.Click();
+            var checkOutPageInstance = PageFactoryExtensions.InitPage<CheckoutPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Info page
+            checkOutPageInstance.ContiniueButton.Click();
+            var checkoutInfoPageInstance = PageFactoryExtensions.InitPage<CheckoutInfoPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Final page and testing if we are there
+            checkoutInfoPageInstance.PurchaseButton.Click();
+            var checkoutFinalPageInstance = PageFactoryExtensions.InitPage<TransactionResults>(Driver);
+            Thread.Sleep(4000);
+            string transactionResultText = checkoutFinalPageInstance.TransactionResultTextBox.Text;
+            Assert.AreEqual("Transaction Results", transactionResultText);
+
+
+
+        }
+
+        [Test]
+        public void BuyingProductsFromAccessoriesPageTest()
+        {
+            //adding to cart products from Accessories Page
+            var testInstance = AccessoriesPage.NavigateTo(base.Driver);
+            var products = testInstance.GetProducts();
+            for (var i = 0; i < products.Count(); i++)
+            {
+                products[i].AddToCartButton.Click();
+                Thread.Sleep(2000);
+            }
+            Thread.Sleep(5000);
+
+            //comparing the number of added products with the number in products in cart
+            var countAsAString = testInstance.ProductCountTextBox.Text;
+            var countAsAnInteger = Convert.ToInt32(countAsAString);
+            Assert.AreEqual(products.Count(), countAsAnInteger);
+
+            //navigating to Checkout Your cart page
+            testInstance.CheckoutButton.Click();
+            var checkOutPageInstance = PageFactoryExtensions.InitPage<CheckoutPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Info page
+            checkOutPageInstance.ContiniueButton.Click();
+            var checkoutInfoPageInstance = PageFactoryExtensions.InitPage<CheckoutInfoPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Final page and testing if we are there
+            checkoutInfoPageInstance.PurchaseButton.Click();
+            var checkoutFinalPageInstance = PageFactoryExtensions.InitPage<TransactionResults>(Driver);
+            Thread.Sleep(4000);
+            string transactionResultText = checkoutFinalPageInstance.TransactionResultTextBox.Text;
+            Assert.AreEqual("Transaction Results", transactionResultText);
+        }
+
+        [Test]
+        public void BuyingProductsFromiMacsPageTest()
+        {
+            //adding to cart products from iMacs Page
+            var testInstance = iMacsPage.NavigateTo(base.Driver);
+            var products = testInstance.GetProducts();
+            for (var i = 0; i < products.Count(); i++)
+            {
+                products[i].AddToCartButton.Click();
+                Thread.Sleep(2000);
+            }
+            Thread.Sleep(5000);
+
+            //comparing the number of added products with the number in products in cart
+            var countAsAString = testInstance.ProductCountTextBox.Text;
+            var countAsAnInteger = Convert.ToInt32(countAsAString);
+            Assert.AreEqual(products.Count(), countAsAnInteger);
+
+            //navigating to Checkout Your cart page
+            testInstance.CheckoutButton.Click();
+            var checkOutPageInstance = PageFactoryExtensions.InitPage<CheckoutPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Info page
+            checkOutPageInstance.ContiniueButton.Click();
+            var checkoutInfoPageInstance = PageFactoryExtensions.InitPage<CheckoutInfoPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Final page and testing if we are there
+            checkoutInfoPageInstance.PurchaseButton.Click();
+            var checkoutFinalPageInstance = PageFactoryExtensions.InitPage<TransactionResults>(Driver);
+            Thread.Sleep(4000);
+            string transactionResultText = checkoutFinalPageInstance.TransactionResultTextBox.Text;
+            Assert.AreEqual("Transaction Results", transactionResultText);
+        }
+
+        [Test]
+        public void BuyingProductsFromiPadsPageTest()
+        {
+            //adding to cart products from iPads Page
+            var testInstance = iPadsPage.NavigateTo(base.Driver);
+            var products = testInstance.GetProducts();
+            for (var i = 0; i < products.Count(); i++)
+            {
+                products[i].AddToCartButton.Click();
+                Thread.Sleep(2000);
+            }
+            Thread.Sleep(5000);
+
+            //comparing the number of added products with the number in products in cart
+            var countAsAString = testInstance.ProductCountTextBox.Text;
+            var countAsAnInteger = Convert.ToInt32(countAsAString);
+            Assert.AreEqual(products.Count(), countAsAnInteger);
+
+            //navigating to Checkout Your cart page
+            testInstance.CheckoutButton.Click();
+            var checkOutPageInstance = PageFactoryExtensions.InitPage<CheckoutPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Info page
+            checkOutPageInstance.ContiniueButton.Click();
+            var checkoutInfoPageInstance = PageFactoryExtensions.InitPage<CheckoutInfoPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Final page and testing if we are there
+            checkoutInfoPageInstance.PurchaseButton.Click();
+            var checkoutFinalPageInstance = PageFactoryExtensions.InitPage<TransactionResults>(Driver);
+            Thread.Sleep(4000);
+            string transactionResultText = checkoutFinalPageInstance.TransactionResultTextBox.Text;
+            Assert.AreEqual("Transaction Results", transactionResultText);
+        }
+
+        [Test]
+        public void BuyingProductsFromiPhonesPageTest()
+        {
+            //adding to cart products from iPhones Page
+            var testInstance = iPhonesPage.NavigateTo(base.Driver);
+            var products = testInstance.GetProducts();
+            for (var i = 0; i < products.Count(); i++)
+            {
+                products[i].AddToCartButton.Click();
+                Thread.Sleep(2000);
+            }
+            Thread.Sleep(5000);
+
+            //comparing the number of added products with the number in products in cart
+            var countAsAString = testInstance.ProductCountTextBox.Text;
+            var countAsAnInteger = Convert.ToInt32(countAsAString);
+            Assert.AreEqual(products.Count(), countAsAnInteger);
+
+            //navigating to Checkout Your cart page
+            testInstance.CheckoutButton.Click();
+            var checkOutPageInstance = PageFactoryExtensions.InitPage<CheckoutPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Info page
+            checkOutPageInstance.ContiniueButton.Click();
+            var checkoutInfoPageInstance = PageFactoryExtensions.InitPage<CheckoutInfoPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Final page and testing if we are there
+            checkoutInfoPageInstance.PurchaseButton.Click();
+            var checkoutFinalPageInstance = PageFactoryExtensions.InitPage<TransactionResults>(Driver);
+            Thread.Sleep(4000);
+            string transactionResultText = checkoutFinalPageInstance.TransactionResultTextBox.Text;
+            Assert.AreEqual("Transaction Results", transactionResultText);
+        }
+
+        [Test]
+        public void BuyingProductsFromiPodsPageTest()
+        {
+            //adding to cart products from iPods Page
+            var testInstance = iPodsPage.NavigateTo(base.Driver);
+            var products = testInstance.GetProducts();
+            for (var i = 0; i < products.Count(); i++)
+            {
+                products[i].AddToCartButton.Click();
+                Thread.Sleep(2000);
+            }
+            Thread.Sleep(5000);
+
+            //comparing the number of added products with the number in products in cart
+            var countAsAString = testInstance.ProductCountTextBox.Text;
+            var countAsAnInteger = Convert.ToInt32(countAsAString);
+            Assert.AreEqual(products.Count(), countAsAnInteger);
+
+            //navigating to Checkout Your cart page
+            testInstance.CheckoutButton.Click();
+            var checkOutPageInstance = PageFactoryExtensions.InitPage<CheckoutPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Info page
+            checkOutPageInstance.ContiniueButton.Click();
+            var checkoutInfoPageInstance = PageFactoryExtensions.InitPage<CheckoutInfoPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Final page and testing if we are there
+            checkoutInfoPageInstance.PurchaseButton.Click();
+            var checkoutFinalPageInstance = PageFactoryExtensions.InitPage<TransactionResults>(Driver);
+            Thread.Sleep(4000);
+            string transactionResultText = checkoutFinalPageInstance.TransactionResultTextBox.Text;
+            Assert.AreEqual("Transaction Results", transactionResultText);
+        }
+
+        [Test]
+        public void BuyingProductsFromMacBooksPageTest()
+        {
+            //adding to cart products from Mac Books Page
+            var testInstance = MacBooksPage.NavigateTo(base.Driver);
+            var products = testInstance.GetProducts();
+            for (var i = 0; i < products.Count(); i++)
+            {
+                products[i].AddToCartButton.Click();
+                Thread.Sleep(2000);
+            }
+            Thread.Sleep(5000);
+
+            //comparing the number of added products with the number in products in cart
+            var countAsAString = testInstance.ProductCountTextBox.Text;
+            var countAsAnInteger = Convert.ToInt32(countAsAString);
+            Assert.AreEqual(products.Count(), countAsAnInteger);
+
+            //navigating to Checkout Your cart page
+            testInstance.CheckoutButton.Click();
+            var checkOutPageInstance = PageFactoryExtensions.InitPage<CheckoutPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Info page
+            checkOutPageInstance.ContiniueButton.Click();
+            var checkoutInfoPageInstance = PageFactoryExtensions.InitPage<CheckoutInfoPage>(Driver);
+            Thread.Sleep(4000);
+
+            //navigating to Checkout Final page and testing if we are there
+            checkoutInfoPageInstance.PurchaseButton.Click();
+            var checkoutFinalPageInstance = PageFactoryExtensions.InitPage<TransactionResults>(Driver);
+            Thread.Sleep(4000);
+            string transactionResultText = checkoutFinalPageInstance.TransactionResultTextBox.Text;
+            Assert.AreEqual("Transaction Results", transactionResultText);
+        }
+    }
+}
